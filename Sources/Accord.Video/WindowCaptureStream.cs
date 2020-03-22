@@ -225,6 +225,7 @@ namespace Accord.Video
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenCaptureStream"/> class.
         /// </summary>
+        /// <param name="windowHandle"></param>
         /// 
         /// <param name="region">Screen's rectangle to capture (the rectangle may cover multiple displays).</param>
         /// 
@@ -237,6 +238,7 @@ namespace Accord.Video
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenCaptureStream"/> class.
         /// </summary>
+        /// <param name="windowHandle"></param>
         /// 
         /// <param name="region">Screen's rectangle to capture (the rectangle may cover multiple displays).</param>
         /// <param name="frameInterval">Time interval between making screen shots, ms.</param>
