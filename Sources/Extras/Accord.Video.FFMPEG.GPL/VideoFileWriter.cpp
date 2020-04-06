@@ -37,6 +37,8 @@
 #include <string>
 #include <cassert>
 
+#define AV_CODEC_FLAG_GLOBAL_HEADER (1 << 22)
+#define CODEC_FLAG_GLOBAL_HEADER AV_CODEC_FLAG_GLOBAL_HEADER
 
 
 using namespace System::IO;
@@ -276,6 +278,10 @@ namespace Accord {
                     default:
                         break;
                     }
+
+                    // Some formats want stream headers to be separate.
+                    if (oc->oformat->flags & AVFMT_GLOBALHEADER)
+                        c->flags |= CODEC_FLAG_GLOBAL_HEADER;
                 }
 
                 static AVFrame* alloc_audio_frame(enum ::AVSampleFormat sample_fmt, uint64_t channel_layout, int sample_rate, int nb_samples)
