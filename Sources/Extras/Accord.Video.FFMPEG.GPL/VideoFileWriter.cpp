@@ -257,7 +257,7 @@ namespace Accord {
 #endif
                         c->time_base = ost->st->time_base;
 
-                        c->gop_size = 12; // emit one intra frame every twelve frames at most
+                        //c->gop_size = 12; // emit one intra frame every twelve frames at most
                         c->pix_fmt = (::AVPixelFormat)m_output_video_pixel_format;
                         if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO)
                         {
@@ -276,10 +276,6 @@ namespace Accord {
                     default:
                         break;
                     }
-
-                    // Some formats want stream headers to be separate.
-                    if (oc->oformat->flags & AVFMT_GLOBALHEADER)
-                        c->flags |= CODEC_FLAG_GLOBAL_HEADER;
                 }
 
                 static AVFrame* alloc_audio_frame(enum ::AVSampleFormat sample_fmt, uint64_t channel_layout, int sample_rate, int nb_samples)
@@ -375,8 +371,8 @@ namespace Accord {
                     if (got_packet)
                     {
                         pkt.duration = ost->next_pts - frame->pts;
-                        pkt.pts = ost->frame->pts;
-                        pkt.dts = ost->frame->pts;
+                        pkt.pts += ost->next_pts - 1;
+                        //pkt.dts = pkt.pts;
                         CHECK(write_frame(oc, &c->time_base, ost->st, &pkt), "Error while writing video frame");
                         return true;
                     }
@@ -404,8 +400,8 @@ namespace Accord {
                     if (got_packet)
                     {
                         pkt.duration = ost->next_pts - frame->pts;
-                        pkt.pts = ost->frame->pts;
-                        pkt.dts = ost->frame->pts;
+                        pkt.pts += ost->next_pts - 1;
+                        //pkt.dts = ost->frame->pts;
                         CHECK(write_frame(oc, &c->time_base, ost->st, &pkt), "Error while writing audio frame");
                         return true;
                     }
@@ -525,7 +521,7 @@ namespace Accord {
                 }
 
 
-                void send_video_frame(OutputStream *ost, uint64_t* bitmapData, int stride)
+                void send_video_frame(OutputStream *ost, uint64_t* bitmapData, int stride, AVPixelFormat format = AVPixelFormat::None)
                 {
                     AVCodecContext* c = ost->enc;
 
@@ -536,8 +532,14 @@ namespace Accord {
                     if (!ost->sws_ctx)
                     {
                         // prepare scaling context to convert grayscale image to video format
+                        ::AVPixelFormat finalFormat = (::AVPixelFormat)format;
+                        if (finalFormat == ::AVPixelFormat::AV_PIX_FMT_NONE)
+                        {
+                            finalFormat = p2f(this->m_input_video_pixel_format);
+                        }
+
                         ost->sws_ctx = CHECK(sws_getContext(
-                            /*re-scale from:  */ this->m_input_video_width, this->m_input_video_height, p2f(this->m_input_video_pixel_format),
+                            /*re-scale from:  */ this->m_input_video_width, this->m_input_video_height, finalFormat,
                             /*to dimensions: */ c->width, c->height, c->pix_fmt,
                             sws_flags, nullptr, nullptr, nullptr), "Could not initialize the grayscale conversion context");
                     }
@@ -762,6 +764,21 @@ namespace Accord {
                     data->video_st.next_pts = TimeSpanToPTS(timestamp, data->video_st.st, data->video_st.enc);
 
                 data->send_video_frame(&data->video_st, (uint64_t*)bitmapData->Scan0.ToPointer(), bitmapData->Stride);
+            }
+
+            void VideoFileWriter::WriteVideoFrame(IntPtr^ rawPixelsPtr, AVPixelFormat pixelFormat, int width, int height, int stride, TimeSpan timestamp)
+            {
+                if (!data->m_input_video_initialized)
+                {
+                    data->m_input_video_width = width;
+                    data->m_input_video_height = height;
+                    data->m_input_video_initialized = true;
+                }
+
+                if (timestamp >= TimeSpan::Zero)
+                    data->video_st.next_pts = TimeSpanToPTS(timestamp, data->video_st.st, data->video_st.enc);
+
+                data->send_video_frame(&data->video_st, (uint64_t*)rawPixelsPtr->ToPointer(), stride, pixelFormat);
             }
 
 

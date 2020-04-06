@@ -471,6 +471,8 @@ namespace Accord {
                 /// 
                 void WriteVideoFrame(BitmapData^ frame, TimeSpan timestamp);
 
+                void WriteVideoFrame(IntPtr^ frame, AVPixelFormat pixelFormat, int width, int height, int stride, TimeSpan timestamp);
+
                 /// <summary>
                 /// Writes a new audio frame to the currently opened video file.
                 /// </summary>

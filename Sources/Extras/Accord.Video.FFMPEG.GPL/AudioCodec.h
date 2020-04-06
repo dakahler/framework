@@ -356,11 +356,6 @@ namespace Accord {
                 Atrac3 = AV_CODEC_ID_ATRAC3,
 
                 /// <summary>
-                ///   VoxWare MetaSound Audio.
-                /// </summary>
-                VoxWare = AV_CODEC_ID_VOXWARE,
-
-                /// <summary>
                 ///   Monkey's Audio lossless audio codec.
                 /// </summary>
                 Ape = AV_CODEC_ID_APE,

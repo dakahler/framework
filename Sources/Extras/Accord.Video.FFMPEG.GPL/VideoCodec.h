@@ -75,11 +75,6 @@ namespace Accord {
                 Mpeg2 = AV_CODEC_ID_MPEG2VIDEO,
 
                 /// <summary>
-                ///   MPEG-2 XVMC.
-                /// </summary>
-                Mpeg2Xvmc = AV_CODEC_ID_MPEG2VIDEO_XVMC,
-
-                /// <summary>
                 ///   H.261.
                 /// </summary>
                 H261 = AV_CODEC_ID_H261,

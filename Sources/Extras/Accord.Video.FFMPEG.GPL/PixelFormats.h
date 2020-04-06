@@ -121,16 +121,6 @@ namespace Accord {
                 /// </summary>
                 FormatYuvj444P = AV_PIX_FMT_YUVJ444P,
 
-                /// <summary>
-                ///  XVideo Motion Acceleration via common packet passing
-                /// </summary>
-                FormatXvmcMpeg2Mc = AV_PIX_FMT_XVMC_MPEG2_MC,
-
-                /// <summary>                
-                ///   XVideo Motion Acceleration via inverse discrete cosine transform.
-                /// </summary>
-                FormatXvmcMpeg2Idct = AV_PIX_FMT_XVMC_MPEG2_IDCT,
-
                 /// <summary>                
                 ///   XVideo Motion Acceleration 
                 /// </summary>
@@ -235,31 +225,6 @@ namespace Accord {
                 FormatYuva420P = AV_PIX_FMT_YUVA420P,
 
                 /// <summary>
-                ///  H.264 HW decoding with VDPAU, data[0] contains a vdpau_render_state struct which contains the bitstream of the slices as well as various fields extracted from headers
-                /// </summary>
-                FormatVdpauH264 = AV_PIX_FMT_VDPAU_H264,
-
-                /// <summary>
-                ///  MPEG-1 HW decoding with VDPAU, data[0] contains a vdpau_render_state struct which contains the bitstream of the slices as well as various fields extracted from headers
-                /// </summary>
-                FormatVdpauMpeg1 = AV_PIX_FMT_VDPAU_MPEG1,
-
-                /// <summary>
-                ///  MPEG-2 HW decoding with VDPAU, data[0] contains a vdpau_render_state struct which contains the bitstream of the slices as well as various fields extracted from headers
-                /// </summary>
-                FormatVdpauMpeg2 = AV_PIX_FMT_VDPAU_MPEG2,
-
-                /// <summary>
-                ///  WMV3 HW decoding with VDPAU, data[0] contains a vdpau_render_state struct which contains the bitstream of the slices as well as various fields extracted from headers
-                /// </summary>
-                FormatVdpauWmv3 = AV_PIX_FMT_VDPAU_WMV3,
-
-                /// <summary>
-                ///  VC-1 HW decoding with VDPAU, data[0] contains a vdpau_render_state struct which contains the bitstream of the slices as well as various fields extracted from headers
-                /// </summary>
-                FormatVdpauVc1 = AV_PIX_FMT_VDPAU_VC1,
-
-                /// <summary>
                 ///  packed RGB 16:16:16, 48bpp, 16R, 16G, 16B, the 2-byte value for each R/G/B component is stored as big-endian
                 /// </summary>
                 FormatRgb48bppBigEndian = AV_PIX_FMT_RGB48BE,
@@ -356,11 +321,6 @@ namespace Accord {
                 ///  planar YUV 4:4:4, 48bpp, (1 Cr and Cb sample per 1x1 Y samples), big-endian
                 /// </summary>
                 FormatYuv444P16BigEndian = AV_PIX_FMT_YUV444P16BE,
-
-                /// <summary>
-                ///  MPEG-4 HW decoding with VDPAU, data[0] contains a vdpau_render_state struct which contains the bitstream of the slices as well as various fields extracted from headers
-                /// </summary>
-                FormatVdpauMpeg4 = AV_PIX_FMT_VDPAU_MPEG4,
 
                 /// <summary>
                 ///  HW decoding through DXVA2, Picture.data[3] contains a LPDIRECT3DSURFACE9 pointer
@@ -676,11 +636,6 @@ namespace Accord {
                 ///  packed YUV 4:2:2, 16bpp, Y0 Cr Y1 Cb
                 /// </summary>
                 FormatYvyu422 = AV_PIX_FMT_YVYU422,
-
-                /// <summary>
-                ///  HW acceleration through VDA, data[3] contains a CVPixelBufferRef
-                /// </summary>
-                FormatVda = AV_PIX_FMT_VDA,
 
                 /// <summary>
                 ///  16 bits gray, 16 bits alpha (big-endian)
