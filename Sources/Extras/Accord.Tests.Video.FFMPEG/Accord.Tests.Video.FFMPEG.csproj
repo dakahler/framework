@@ -207,36 +207,36 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\avcodec-57.dll">
-      <Link>avcodec-57.dll</Link>
+    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\avcodec-58.dll">
+      <Link>avcodec-58.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\avdevice-57.dll">
-      <Link>avdevice-57.dll</Link>
+    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\avdevice-58.dll">
+      <Link>avdevice-58.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\avfilter-6.dll">
-      <Link>avfilter-6.dll</Link>
+    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\avfilter-7.dll">
+      <Link>avfilter-7.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\avformat-57.dll">
-      <Link>avformat-57.dll</Link>
+    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\avformat-58.dll">
+      <Link>avformat-58.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\avutil-55.dll">
-      <Link>avutil-55.dll</Link>
+    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\avutil-56.dll">
+      <Link>avutil-56.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\postproc-54.dll">
-      <Link>postproc-54.dll</Link>
+    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\postproc-55.dll">
+      <Link>postproc-55.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\swresample-2.dll">
-      <Link>swresample-2.dll</Link>
+    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\swresample-3.dll">
+      <Link>swresample-3.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\swscale-4.dll">
-      <Link>swscale-4.dll</Link>
+    <None Include="..\..\..\Externals\ffmpeg\ffmpeg-3.2.2-$(FFmpegPlatform)-shared\bin\swscale-5.dll">
+      <Link>swscale-5.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

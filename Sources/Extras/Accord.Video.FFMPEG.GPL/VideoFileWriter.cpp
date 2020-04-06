@@ -377,7 +377,8 @@ namespace Accord {
                     if (got_packet)
                     {
                         pkt.duration = ost->next_pts - frame->pts;
-                        pkt.pts += ost->next_pts - 1;
+                        pkt.pts = ost->frame->pts;
+                        pkt.dts = ost->frame->pts;
                         //pkt.dts = pkt.pts;
                         CHECK(write_frame(oc, &c->time_base, ost->st, &pkt), "Error while writing video frame");
                         return true;
@@ -406,8 +407,8 @@ namespace Accord {
                     if (got_packet)
                     {
                         pkt.duration = ost->next_pts - frame->pts;
-                        pkt.pts += ost->next_pts - 1;
-                        //pkt.dts = ost->frame->pts;
+                        pkt.pts = ost->frame->pts;
+                        pkt.dts = ost->frame->pts;
                         CHECK(write_frame(oc, &c->time_base, ost->st, &pkt), "Error while writing audio frame");
                         return true;
                     }
