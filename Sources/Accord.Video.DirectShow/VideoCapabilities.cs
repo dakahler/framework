@@ -73,6 +73,11 @@ namespace Accord.Video.DirectShow
         public readonly int MaximumFrameRate;
 
         /// <summary>
+        /// 
+        /// </summary>
+        public readonly long AverageTimePerFrame;
+
+        /// <summary>
         /// Number of bits per pixel provided by the camera.
         /// </summary>
         public readonly int BitCount;
@@ -153,6 +158,7 @@ namespace Accord.Video.DirectShow
                     BitCount = videoInfo.BmiHeader.BitCount;
                     AverageFrameRate = (int)(10000000 / videoInfo.AverageTimePerFrame);
                     MaximumFrameRate = (int)(10000000 / caps.MinFrameInterval);
+                    AverageTimePerFrame = videoInfo.AverageTimePerFrame;
                 }
                 else if (mediaType.FormatType == FormatType.VideoInfo2)
                 {
@@ -162,6 +168,7 @@ namespace Accord.Video.DirectShow
                     BitCount = videoInfo.BmiHeader.BitCount;
                     AverageFrameRate = (int)(10000000 / videoInfo.AverageTimePerFrame);
                     MaximumFrameRate = (int)(10000000 / caps.MinFrameInterval);
+                    AverageTimePerFrame = videoInfo.AverageTimePerFrame;
                 }
                 else
                 {

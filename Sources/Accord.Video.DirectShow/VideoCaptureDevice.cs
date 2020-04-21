@@ -233,6 +233,54 @@ namespace Accord.Video.DirectShow
         public event NewFrameEventHandler NewFrame;
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        public delegate void RawNewFrameEventHandler(object sender, RawNewFrameEventArgs eventArgs);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public class RawNewFrameEventArgs : EventArgs
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RawNewFrameEventArgs"/> class.
+            /// </summary>
+            /// 
+            /// <param name="data">New data.</param>
+            /// <param name="bufferLen"></param>
+            /// <param name="sampleTime"></param>
+            /// 
+            public RawNewFrameEventArgs(double sampleTime, IntPtr data, int bufferLen)
+            {
+                this.SampleTime = sampleTime;
+                this.Data = data;
+                this.Length = bufferLen;
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public double SampleTime;
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public IntPtr Data;
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public int Length;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public event RawNewFrameEventHandler RawNewFrame;
+
+        /// <summary>
         /// Snapshot frame event.
         /// </summary>
         /// 
@@ -616,6 +664,7 @@ namespace Accord.Video.DirectShow
                 {
                     thread = new Thread(WorkerThread);
                     thread.Name = deviceMoniker; // mainly for debugging
+                    thread.IsBackground = true;
                     thread.Start();
                 }
                 else
@@ -671,12 +720,13 @@ namespace Accord.Video.DirectShow
         /// 
         public void Stop()
         {
-            if (thread != null)
-            {
-                thread.Abort();
-                thread.Join();
-                thread = null;
-            }
+            // No can do for .net core
+            //if (thread != null)
+            //{
+            //    thread.Abort();
+            //    thread.Join();
+            //    thread = null;
+            //}
         }
 
         /// <summary>
@@ -1151,7 +1201,7 @@ namespace Accord.Video.DirectShow
                     this.IsRunning = false;
                     this.hasFinished.Set();
                 }
-            } while (shouldWake.WaitOne());
+            } while (shouldWake != null && shouldWake.WaitOne());
         }
 
         private void DoWork(bool runGraph)
@@ -1739,6 +1789,21 @@ namespace Accord.Video.DirectShow
         }
 
         /// <summary>
+        /// Notifies clients about new frame.
+        /// </summary>
+        /// 
+        /// <param name="args">Event arguments containing the new frame's image.</param>
+        /// 
+        private void OnRawNewFrame(RawNewFrameEventArgs args)
+        {
+            framesReceived++;
+            //bytesReceived += args.Frame.Width * args.Frame.Height * (Bitmap.GetPixelFormatSize(args.Frame.PixelFormat) >> 3);
+
+            if (RawNewFrame != null && !this.shouldStop)
+                RawNewFrame(this, args);
+        }
+
+        /// <summary>
         /// Notifies clients about new snapshot frame.
         /// </summary>
         /// 
@@ -1766,7 +1831,7 @@ namespace Accord.Video.DirectShow
             private bool snapshotMode;
             private PixelFormat pixelFormat;
             private Bitmap image;
-            private NewFrameEventArgs args;
+            //private NewFrameEventArgs args;
 
             public int Width { get; set; }
 
@@ -1789,53 +1854,59 @@ namespace Accord.Video.DirectShow
             // Callback method that receives a pointer to the sample buffer
             public int BufferCB(double sampleTime, IntPtr buffer, int bufferLen)
             {
-                if (parent.NewFrame != null)
+                if (parent.RawNewFrame != null)
                 {
-                    if (this.image == null)
-                    {
-                        // create new image
-                        this.image = new Bitmap(Width, Height, this.pixelFormat);
-                        this.args = new NewFrameEventArgs(this.image);
-                    }
-
-                    args.CaptureStarted = parent.startTime;
-                    args.CaptureFinished = DateTime.Now;
-
-                    // lock bitmap data
-                    BitmapData imageData = image.LockBits(ImageLockMode.WriteOnly);
-
-                    // copy image data
-                    int srcStride = imageData.Stride;
-                    int dstStride = imageData.Stride;
-
-                    unsafe
-                    {
-                        byte* dst = (byte*)imageData.Scan0.ToPointer() + dstStride * (Height - 1);
-                        byte* src = (byte*)buffer.ToPointer();
-
-                        for (int y = 0; y < Height; y++)
-                        {
-                            Win32.memcpy(dst, src, srcStride);
-                            dst -= dstStride;
-                            src += srcStride;
-                        }
-                    }
-
-                    // unlock bitmap data
-                    image.UnlockBits(imageData);
-
-                    // notify parent
-                    if (snapshotMode)
-                    {
-                        parent.OnSnapshotFrame(args);
-                    }
-                    else
-                    {
-                        parent.OnNewFrame(args);
-                    }
-
-                    args.FrameIndex++;
+                    //Console.WriteLine("sample time: " + sampleTime);
+                    parent.OnRawNewFrame(new RawNewFrameEventArgs(sampleTime, buffer, bufferLen));
                 }
+
+                //if (parent.NewFrame != null)
+                //{
+                //    if (this.image == null)
+                //    {
+                //        // create new image
+                //        this.image = new Bitmap(Width, Height, this.pixelFormat);
+                //        this.args = new NewFrameEventArgs(this.image);
+                //    }
+
+                //    args.CaptureStarted = parent.startTime;
+                //    args.CaptureFinished = DateTime.Now;
+
+                //    // lock bitmap data
+                //    BitmapData imageData = image.LockBits(ImageLockMode.WriteOnly);
+
+                //    // copy image data
+                //    int srcStride = imageData.Stride;
+                //    int dstStride = imageData.Stride;
+
+                //    unsafe
+                //    {
+                //        byte* dst = (byte*)imageData.Scan0.ToPointer() + dstStride * (Height - 1);
+                //        byte* src = (byte*)buffer.ToPointer();
+
+                //        for (int y = 0; y < Height; y++)
+                //        {
+                //            Win32.memcpy(dst, src, srcStride);
+                //            dst -= dstStride;
+                //            src += srcStride;
+                //        }
+                //    }
+
+                //    // unlock bitmap data
+                //    image.UnlockBits(imageData);
+
+                //    // notify parent
+                //    if (snapshotMode)
+                //    {
+                //        parent.OnSnapshotFrame(args);
+                //    }
+                //    else
+                //    {
+                //        parent.OnNewFrame(args);
+                //    }
+
+                //    args.FrameIndex++;
+                //}
 
                 return 0;
             }
