@@ -40,6 +40,7 @@ namespace Accord.Video.DirectShow
     using Accord.Video.DirectShow.Internals;
     using Accord.Imaging;
     using System.ComponentModel;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Video source for local video capture device (for example USB webcam).
@@ -1154,7 +1155,7 @@ namespace Accord.Video.DirectShow
             } while (shouldWake.WaitOne());
         }
 
-        private void DoWork(bool runGraph)
+        private async void DoWork(bool runGraph)
         {
             var reasonToStop = ReasonToFinishPlaying.StoppedByUser;
             bool isSnapshotSupported = false;
@@ -1410,6 +1411,9 @@ namespace Accord.Video.DirectShow
                                     crossbarVideoInput = GetCurrentCrossbarInput(crossbar);
                                 }
                             }
+
+                            // Thottle
+                            await Task.Delay(10);
                         }
                         while (!shouldStop && runGraph);
 
